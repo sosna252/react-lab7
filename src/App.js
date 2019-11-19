@@ -1,9 +1,10 @@
 import React from 'react';
+import ComponentOne from './Component';
 
 function App() {
   return (
     <div>
-      Empty App
+      <ComponentOne></ComponentOne>
     </div>
   );
 }
