@@ -1,5 +1,5 @@
 import React from 'react';
-import ComponentOne from './Component';
+//import ComponentOne from './Component';
 import Component from './ComponentTwo'
 
 function App() {
