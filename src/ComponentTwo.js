@@ -10,9 +10,9 @@ class App extends React.Component {
             ParentPhone:"",
             Name:"",
             Email:"",
-            AgeOk: true,
-            NumberOK: true,
-            EmailOk: true
+            AgeOk: false,
+            NumberOK: false,
+            EmailOk: false
 		};
         this.handleChange=this.handleChange.bind(this); 
         this.AgeValidation=this.AgeValidation.bind(this);
@@ -23,40 +23,45 @@ class App extends React.Component {
     handleChange (event) { 
         switch(event.target.name){
         case "Age":
-            this.setState({Age: event.target.value}); 
+            this.setState({Age: event.target.value});
+            this.AgeValidation(event.target.value); 
             break;
         case "ParentName":
             this.setState({ParentName: event.target.value});
             break;
         case "ParentPhone":
-            this.setState({ParentPhone: event.target.value}); 
+            this.setState({ParentPhone: event.target.value});
+            this.NumberValidation(event.target.value); 
             break;
         case "Name":
             this.setState({Name: event.target.value}); 
             break;
         case "Email":
-            this.setState({Email: event.target.value});     
+            this.setState({Email: event.target.value});
+            this.EmailValidation(event.target.value);     
+            break;
+        default:
             break;
         }     
     }
-    AgeValidation (event)
+    AgeValidation (age)
     {
-        if(this.state.Age>0)
+        if(age>0)
             this.setState({AgeOk:true})
         else
             this.setState({AgeOk:false})
     }
-    NumberValidation (event)
+    NumberValidation (number)
     {
-        if(this.state.ParentPhone.match(/^[0-9]{9}$/))
+        if(number.match(/^[0-9]{9}$/))
             this.setState({NumberOK: true})
         else
             this.setState({NumberOK: false})
         
     }
-    EmailValidation (event)
+    EmailValidation (email)
     {
-        if(this.state.Email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/))
+        if(email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/))
             this.setState({EmailOk: true})
         else
             this.setState({EmailOk: false})
@@ -70,37 +75,32 @@ class App extends React.Component {
 	
 	render() { 
 		
-            return(
-                
-                this.state.Age < 18 ?
+            return(           
                <div>
                   <p> Age <input name="Age" onChange={this.handleChange} type='number'></input></p>
                   {this.state.AgeOk ? null : <label style={{color:"red"}}>Wrong Age</label>}
-                  <p> Parent Name <input name="ParentName" onChange={this.handleChange}></input> </p>
-                  <p> Parent Phone No. <input name="ParentPhone" onChange={this.handleChange}></input> </p>
-                  {this.state.NumberOK ? null : <div><label style={{color:"red"}}>Wrong Number</label><br/></div>}
-                
-                  <button onClick={this.Validation}>Submit</button>
-                  <br/>
+                  {this.state.Age < 18 ?
+                    <div> 
+                        <p> Parent Name <input name="ParentName" onChange={this.handleChange}></input> </p>
+                        <p> Parent Phone No. <input name="ParentPhone" onChange={this.handleChange}></input> </p>
+                        {this.state.NumberOK ? null : <div><label style={{color:"red"}}>Wrong Number</label><br/></div>}
+                    </div>
+                    :
+                    <div>
+                        <p> Name <input name="Name" onChange={this.handleChange}></input> </p>
+                        <p> Email <input name="Email" onChange={this.handleChange}></input> </p>
+                        {this.state.EmailOk ? null : <div><label style={{color:"red"}}>Wrong Email</label><br/></div>}
+                    </div>
+                }
+                  <button disabled={!((this.state.AgeOk) &&(this.state.Age<18 ? this.state.NumberOK : this.state.EmailOk))}>Submit</button>
                 </div>
-                :
-                <div>
-                  <p> Age <input name="Age" onChange={this.handleChange} type='number'></input> </p>
-                  {this.state.AgeOk ? null : <label style={{color:"red"}}>Wrong Age</label>}
-                  <p> Name <input name="Name" onChange={this.handleChange}></input> </p>
-                  <p> Email <input name="Email" onChange={this.handleChange}></input> </p>
-                  {this.state.EmailOk ? null : <div><label style={{color:"red"}}>Wrong Email</label><br/></div>}
-                  
-                  <button onClick={this.Validation}>Submit</button>
-                  <br/>
-                </div>
-
-               
             )
         }
+            
+    }
 		
         	
 	
-}
+
 
 export default App
